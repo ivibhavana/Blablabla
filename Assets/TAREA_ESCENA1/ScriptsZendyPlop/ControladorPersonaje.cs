@@ -10,57 +10,47 @@ public class ControladorPersonaje : MonoBehaviour
     public LayerMask capaFrutas;
     private int contadorFrutas = 0;
 
+    
+    public float radioDelCollider = 0.5f;
+    public float alturaDelCollider = 2.0f;
+
     void Start()
     {
-        
         vidaActual = vidaMaxima;
 
-        
         if (barraVida != null)
         {
-            barraVida.value = 1f;  
+            barraVida.value = 1f;
             ActualizarBarraVida();
         }
     }
 
-    public float VidaNormalizada()
+    void Update()
     {
         
-        if (vidaMaxima > 0)
-        {
-            return vidaActual / vidaMaxima;
-        }
-        else
-        {
-            
-            return 0f;
-        }
-    }
+        Collider[] frutasEnRango = Physics.OverlapCapsule(
+            transform.position + Vector3.up * (alturaDelCollider / 2),
+            transform.position - Vector3.up * (alturaDelCollider / 2),
+            radioDelCollider,
+            capaFrutas
+        );
 
-    public void RecibirDanio()
-    {
         
+        foreach (Collider frutaCollider in frutasEnRango)
+        {
+            Destroy(frutaCollider.gameObject);
+            contadorFrutas++;
+            ActualizarContadorFrutas();
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         
-        if (capaFrutas == (capaFrutas | (1 << other.gameObject.layer)))
-        {
-            
-            Destroy(other.gameObject);
-
-            
-            contadorFrutas++;
-
-            
-            ActualizarContadorFrutas();
-        }
     }
 
     void ActualizarContadorFrutas()
     {
-        
         if (contadorFrutasText != null)
         {
             contadorFrutasText.text = "Frutas: " + contadorFrutas;
@@ -68,28 +58,18 @@ public class ControladorPersonaje : MonoBehaviour
     }
 
     public void RecibirDanio(float cantidadDanio)
-{
-    
-    vidaActual -= cantidadDanio;
-
-    
-    vidaActual = Mathf.Max(vidaActual, 0f);
-
-    
-    ActualizarBarraVida();
-
-    
-}
-
+    {
+        vidaActual -= cantidadDanio;
+        vidaActual = Mathf.Max(vidaActual, 0f);
+        ActualizarBarraVida();
+    }
 
     void ActualizarBarraVida()
     {
-        
         if (barraVida != null)
         {
-            
             float valorRelativo = vidaActual / vidaMaxima;
-            barraVida.value = 1 - valorRelativo;  
+            barraVida.value = 1 - valorRelativo;
         }
     }
 }

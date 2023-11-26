@@ -6,7 +6,9 @@ TagManager:
   tags:
   - FxTemporaire
   - Frutas
-  - FlorRun
+  - LaserPrefab
+  - Suelo
+  - Enemigo
   layers:
   - Default
   - TransparentFX
