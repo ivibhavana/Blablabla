@@ -1,8 +1,8 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemigo : MonoBehaviour
 {
-    public float velocidadMovimiento = 3f;
     public float distanciaDeteccion = 5f;
     public float distanciaAtaque = 1f;
     public float radioMovimiento = 5f;
@@ -14,6 +14,8 @@ public class Enemigo : MonoBehaviour
     private Transform player;
     private Vector3 posicionInicial;
     private int vidaActual;
+
+    private NavMeshAgent navMeshAgent;  // Agregamos un componente NavMeshAgent
 
     // Propiedad para la vida
     public int Vida
@@ -27,6 +29,9 @@ public class Enemigo : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         posicionInicial = transform.position;
         vidaActual = vidaMaxima;
+
+        // Inicializamos el NavMeshAgent
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
@@ -39,26 +44,20 @@ public class Enemigo : MonoBehaviour
 
             if (Vector3.Distance(transform.position, player.position) < distanciaAtaque)
             {
-                
+                // Realizar acciones de ataque si es necesario
             }
         }
     }
 
     void MoverAleatoriamente()
     {
-        float deltaX = Random.Range(-1f, 1f);
-        float deltaZ = Random.Range(-1f, 1f);
-
-        Vector3 nuevaPosicion = transform.position + new Vector3(deltaX, 0f, deltaZ) * velocidadMovimiento * Time.deltaTime;
-
-        Vector3 direccion = nuevaPosicion - posicionInicial;
-        if (direccion.magnitude > radioMovimiento)
-        {
-            direccion = direccion.normalized * radioMovimiento;
-            nuevaPosicion = posicionInicial + direccion;
-        }
-
-        transform.position = nuevaPosicion;
+        // Generamos un nuevo destino aleatorio en cualquier posición dentro del NavMesh
+        Vector3 randomDirection = Random.insideUnitSphere * radioMovimiento;
+        randomDirection += posicionInicial;
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, radioMovimiento, NavMesh.AllAreas);  // Usamos NavMesh.AllAreas
+        Vector3 finalPosition = hit.position;
+        navMeshAgent.SetDestination(finalPosition);
     }
 
     void SeguirJugador()
@@ -67,23 +66,20 @@ public class Enemigo : MonoBehaviour
 
         if (distanciaAlJugador > distanciaMinima)
         {
-            transform.LookAt(player);
-            transform.Translate(Vector3.forward * velocidadMovimiento * Time.deltaTime);
+            // Configuramos el destino del NavMeshAgent al jugador
+            navMeshAgent.SetDestination(player.position);
         }
-        
     }
 
-    
     public void QuitarVida(int cantidad)
     {
         vidaActual -= cantidad;
 
         if (vidaActual <= 0)
         {
-            
             if (--disparosNecesarios <= 1)
             {
-                
+                // Realizar acciones al derrotar al enemigo
             }
         }
     }
