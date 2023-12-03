@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController CharacterController;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVel;
-    static public float speed = 10f;
+    static public float speed = 15f;
     public float jumpSpeed = 5f;
 
     private Vector3 moveDirection = Vector3.zero;
