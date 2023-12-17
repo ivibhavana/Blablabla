@@ -8,20 +8,58 @@ public class Enemigo : MonoBehaviour
     public float radioMovimiento = 5f;
     public int vidaMaxima = 1;
     public float distanciaMinima = 2f;
-    public int danioPorDisparo = 1;
-    private int disparosNecesarios = 1;
 
     private Transform player;
     private Vector3 posicionInicial;
     private int vidaActual;
 
-    private NavMeshAgent navMeshAgent;  // Agregamos un componente NavMeshAgent
+    private NavMeshAgent navMeshAgent;
+
+    private int disparosNecesarios = 1;
 
     // Propiedad para la vida
     public int Vida
     {
         get { return vidaActual; }
         set { vidaActual = value; }
+    }
+
+    // Función para obtener la vida actual
+    public int ObtenerVidaActual()
+    {
+        return vidaActual;
+    }
+
+    // Función para reducir la vida
+    public void QuitarVida(int cantidad)
+    {
+        vidaActual -= cantidad;
+
+        if (vidaActual <= 0)
+        {
+            // El enemigo murió, realizar acciones de muerte si es necesario
+        }
+    }
+
+    // Función para obtener disparos necesarios
+    public int ObtenerDisparosNecesarios()
+    {
+        return disparosNecesarios;
+    }
+
+    // Función para reducir disparos necesarios
+    public void ReducirDisparosNecesarios()
+    {
+        disparosNecesarios--;
+
+        if (disparosNecesarios <= 3)
+        {
+            // El enemigo está atacando, realizar acciones de ataque si es necesario
+        }
+        if (vidaActual <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Start()
@@ -51,11 +89,10 @@ public class Enemigo : MonoBehaviour
 
     void MoverAleatoriamente()
     {
-        // Generamos un nuevo destino aleatorio en cualquier posición dentro del NavMesh
         Vector3 randomDirection = Random.insideUnitSphere * radioMovimiento;
         randomDirection += posicionInicial;
         NavMeshHit hit;
-        NavMesh.SamplePosition(randomDirection, out hit, radioMovimiento, NavMesh.AllAreas);  // Usamos NavMesh.AllAreas
+        NavMesh.SamplePosition(randomDirection, out hit, radioMovimiento, NavMesh.AllAreas);
         Vector3 finalPosition = hit.position;
         navMeshAgent.SetDestination(finalPosition);
     }
@@ -66,21 +103,7 @@ public class Enemigo : MonoBehaviour
 
         if (distanciaAlJugador > distanciaMinima)
         {
-            // Configuramos el destino del NavMeshAgent al jugador
             navMeshAgent.SetDestination(player.position);
-        }
-    }
-
-    public void QuitarVida(int cantidad)
-    {
-        vidaActual -= cantidad;
-
-        if (vidaActual <= 0)
-        {
-            if (--disparosNecesarios <= 1)
-            {
-                // Realizar acciones al derrotar al enemigo
-            }
         }
     }
 }

@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: b3b661a05e306c242a9ef18c6b5bf5eb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - laserSound: {fileID: 8300000, guid: ecb378c7e4592a1429b78bb5f4e04756, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

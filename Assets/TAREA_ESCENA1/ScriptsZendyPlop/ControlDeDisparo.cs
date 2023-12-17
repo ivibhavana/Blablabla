@@ -4,8 +4,20 @@ public class ControlDeDisparo : MonoBehaviour
 {
     public GameObject laserPrefab;
     public Transform puntoDeDisparo;
-    public float velocidadLaser = 10f;
-    public float tiempoDeVida = 2f;
+    public float velocidadLaser = 20f;
+    public float tiempoDeVida = 0.5f;
+
+    private LaserGun laserGun; // Referencia al script de audio
+
+    void Start()
+    {
+        // Obtén o añade el componente LaserGun al objeto
+        laserGun = GetComponent<LaserGun>();
+        if (laserGun == null)
+        {
+            laserGun = gameObject.AddComponent<LaserGun>();
+        }
+    }
 
     void Update()
     {
@@ -23,18 +35,40 @@ public class ControlDeDisparo : MonoBehaviour
         rb.velocity = puntoDeDisparo.forward * velocidadLaser;
 
         Destroy(laser, tiempoDeVida);
-    }
 
-    
-    void OnTriggerEnter(Collider other)
-    {
-        
-        Enemigo enemigo = other.GetComponent<Enemigo>();
+        // Llama a la función de audio al disparar
+        laserGun.FireLaser();
 
-        if (enemigo != null)
+        // Añade la lógica para contar los disparos al enemigo
+        RaycastHit hit;
+        if (Physics.Raycast(puntoDeDisparo.position, puntoDeDisparo.forward, out hit))
         {
-            
-            enemigo.QuitarVida(10); 
+            // Asegúrate de que el objeto golpeado tenga el layer "Enemy"
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                Enemigo enemigo = hit.collider.GetComponent<Enemigo>();
+                if (enemigo != null)
+                {
+                    enemigo.QuitarVida(1); // Reduces 3 de vida con cada disparo
+
+                    // Comprueba si el enemigo debe ser destruido
+                    if (enemigo.ObtenerVidaActual() <= 0)
+                    {
+                        if (enemigo.ObtenerDisparosNecesarios() <= 0)
+                        {
+                            Destroy(enemigo.gameObject);
+                        }
+                        else
+                        {
+                            enemigo.ReducirDisparosNecesarios();
+                        }
+
+                    }
+                }
+            }
         }
     }
 }
+
+
+    

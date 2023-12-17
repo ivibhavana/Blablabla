@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isDisabled = true;
             CharacterController.enabled = false;
-            StartCoroutine(EnablePlayerAfterDelay(2f));
+            StartCoroutine(EnablePlayerAfterDelay(0.1f));
         }
     }
 

@@ -5,11 +5,11 @@ using UnityEngine;
 public class ShootingObject : MonoBehaviour
 {
     public float shootingRange = 10f;
-    public LayerMask playerLayer;
+    public LayerMask playerLayer;  // Asegúrate de que coincida con la capa exactamente
     public GameObject bulletPrefab;
     public float bulletSpeed = 10f;
-    public float timeBetweenShots = 1f; 
-    public float bulletLifetime = 3f; 
+    public float timeBetweenShots = 1f;
+    public float bulletLifetime = 3f;
 
     private float timeSinceLastShot;
 
@@ -21,15 +21,18 @@ public class ShootingObject : MonoBehaviour
     void DetectAndShoot()
     {
         RaycastHit hit;
+
+        // Debugging ray visualization
+        Debug.DrawRay(transform.position, transform.forward * shootingRange, Color.red);
+
         if (Physics.Raycast(transform.position, transform.forward, out hit, shootingRange, playerLayer))
         {
             Debug.Log("¡Jugador detectado!");
 
-            
             if (Time.time - timeSinceLastShot > timeBetweenShots)
             {
                 Shoot();
-                timeSinceLastShot = Time.time; 
+                timeSinceLastShot = Time.time;
             }
         }
     }
@@ -38,19 +41,12 @@ public class ShootingObject : MonoBehaviour
     {
         if (bulletPrefab != null)
         {
-            
             GameObject bullet = Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
-
-            
             Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
 
-            
             if (bulletRigidbody != null)
             {
-                
                 bulletRigidbody.velocity = transform.forward * bulletSpeed;
-
-                
                 Destroy(bullet, bulletLifetime);
             }
             else

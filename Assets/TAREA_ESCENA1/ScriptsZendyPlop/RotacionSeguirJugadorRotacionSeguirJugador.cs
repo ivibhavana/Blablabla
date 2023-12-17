@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RotacionSeguirJugador : MonoBehaviour
@@ -8,13 +6,21 @@ public class RotacionSeguirJugador : MonoBehaviour
 
     void Update()
     {
+        MirarAlJugador();
+    }
+
+    void MirarAlJugador()
+    {
         if (jugador != null)
         {
-            
             Vector3 direccionAlJugador = jugador.position - transform.position;
+            direccionAlJugador.y = 0f;
 
-            
-            transform.rotation = Quaternion.LookRotation(direccionAlJugador);
+            if (direccionAlJugador != Vector3.zero)
+            {
+                Quaternion rotacionDeseada = Quaternion.LookRotation(direccionAlJugador);
+                transform.rotation = rotacionDeseada;
+            }
         }
     }
 }

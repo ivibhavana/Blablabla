@@ -1,0 +1,23 @@
+Tarea ZendyPocket Final:
+
+-Se realizaron 2 niveles grandes y se agregó se agregó una 3era escena de inicio.
+
+-Se integraron sistemas de audio de Unity en el videojuego, durante las mecánicas y para ambientar el mundo.
+
+-Se integraron luces al sistema de iluminación de Unity en el videojuego, utilizándolas acorde al entorno planteado en el juego.
+
+-Se integraron sistema de partículas al videojuego, utilizándolo para mejorar el entendimiento del juego y/o enriquecer el ambiente del mismo.
+
+-Se integraron Skybox a los 2 niveles de acuerdo a la temática de los mismos.
+
+-Se integraron Trails a las bolas de demolición para apoyar a las mecánicas del mismo y/o ambientar el mundo.
+
+-Se integró un sistema de guardado sencillo con "PlayerPrefs" donde se guarda el progreso del jugador (cantidad de coleccionables, posición del jugador, nivel actual, junto con 2 scripts de guardado y carga adjuntados en onclick del inspector.
+
+-Se Conectaron todos los niveles desarrollados entre ellos con el uso de SceneManager.
+
+-Se conecto la escena 1 con la 2 a traves de un scenemanager (debe esperar un tiempo sobre la bandera para pasar a la siguiente etapa).
+
+-Se agregó quitar vida en el slider del player cuando los enemigos empujan al player.
+
+-Se agregó matar enemigos con un diparo.

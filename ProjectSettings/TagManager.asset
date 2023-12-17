@@ -16,12 +16,12 @@ TagManager:
   - Frutas
   - Water
   - UI
-  - Player
+  - Laser
   - Enemy
   - tubo
-  - 
-  - 
-  - 
+  - "gu\xEDacamino"
+  - Player
+  - Piso
   - 
   - 
   - 
@@ -45,4 +45,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: guiacamino
+    uniqueID: 1217203227
+    locked: 0
+  - name: player
+    uniqueID: 4213053795
     locked: 0
